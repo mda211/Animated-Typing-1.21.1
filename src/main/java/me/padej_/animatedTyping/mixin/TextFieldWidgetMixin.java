@@ -4,7 +4,6 @@ import me.padej_.animatedTyping.animation.AnimationHandler;
 import me.padej_.animatedTyping.config.ConfigManager;
 import me.padej_.animatedTyping.util.RemovedChar;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.widget.ClickableWidget;
@@ -67,10 +66,11 @@ public abstract class TextFieldWidgetMixin extends ClickableWidget {
         if (!isVisible()) return;
 
         Matrix3x2fStack matrixStack = context.getMatrices();
-
-        if (drawsBackground()) {
+        
+        // Reverted 1.21.1 compatible code
+        if (this.drawsBackground()) {
             Identifier identifier = TEXTURES.get(this.isNarratable(), this.isFocused());
-            context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, identifier, this.getX(), this.getY(), this.getWidth(), this.getHeight());
+            context.drawGuiTexture(identifier, this.getX(), this.getY(), this.getWidth(), this.getHeight());
         }
 
         int textColor = this.editable ? this.editableColor : this.uneditableColor;
@@ -129,3 +129,4 @@ public abstract class TextFieldWidgetMixin extends ClickableWidget {
         ci.cancel();
     }
 }
+
